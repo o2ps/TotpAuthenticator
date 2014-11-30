@@ -1,6 +1,6 @@
 <?php
 
-namespace Oops\GoogleAuthenticator\Utils;
+namespace Oops\TotpAuthenticator\Utils;
 
 
 class TimeProvider implements ITimeProvider

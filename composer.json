@@ -1,6 +1,6 @@
 {
-	"name": "oops/google-authenticator",
-	"description": "Two-factor authenticator via Google Authenticator app.",
+	"name": "oops/totp-authenticator",
+	"description": "Two-factor authenticator via TOTP algorithm.",
 	"keywords": ["security", "authentication", "2fa", "totp"],
 	"type": "library",
 	"license": "BSD-3-Clause",
@@ -13,7 +13,7 @@
 	],
 	"support": {
 		"email": "me@jiripudil.cz",
-		"issues": "https://github.com/o2ps/GoogleAuthenticator/issues"
+		"issues": "https://github.com/o2ps/TotpAuthenticator/issues"
 	},
 	"require": {
 		"php": ">= 5.4.0",
@@ -27,13 +27,13 @@
 	},
 	"autoload": {
 		"psr-0": {
-			"Oops\\GoogleAuthenticator\\": "src/"
+			"Oops\\TotpAuthenticator\\": "src/"
 		},
 		"classmap": [
-			"src/Oops/GoogleAuthenticator/exceptions.php"
+			"src/Oops/TotpAuthenticator/exceptions.php"
 		],
 		"files": [
-			"src/Oops/GoogleAuthenticator/DI/compatibility.php"
+			"src/Oops/TotpAuthenticator/DI/compatibility.php"
 		]
 	}
 }

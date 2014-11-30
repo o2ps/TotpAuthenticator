@@ -1,6 +1,6 @@
 <?php
 
-namespace Oops\GoogleAuthenticator;
+namespace Oops\TotpAuthenticator;
 
 
 class InvalidArgumentException extends \InvalidArgumentException {}
