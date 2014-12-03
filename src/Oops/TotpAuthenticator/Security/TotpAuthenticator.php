@@ -1,13 +1,13 @@
 <?php
 
-namespace Oops\GoogleAuthenticator\Security;
+namespace Oops\TotpAuthenticator\Security;
 
 use Nette\Utils\Random;
-use Oops\GoogleAuthenticator\InvalidArgumentException;
-use Oops\GoogleAuthenticator\Utils\ITimeProvider;
+use Oops\TotpAuthenticator\InvalidArgumentException;
+use Oops\TotpAuthenticator\Utils\ITimeProvider;
 
 
-class GoogleAuthenticator
+class TotpAuthenticator
 {
 
 	/** @var int */
@@ -28,7 +28,7 @@ class GoogleAuthenticator
 
 	/**
 	 * @param int $timeWindow
-	 * @return GoogleAuthenticator provides fluent interface
+	 * @return TotpAuthenticator provides fluent interface
 	 */
 	public function setTimeWindow($timeWindow)
 	{
@@ -39,7 +39,7 @@ class GoogleAuthenticator
 
 	/**
 	 * @param string $issuer
-	 * @return GoogleAuthenticator provides fluent interface
+	 * @return TotpAuthenticator provides fluent interface
 	 */
 	public function setIssuer($issuer)
 	{

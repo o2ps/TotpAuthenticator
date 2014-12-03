@@ -1,11 +1,11 @@
 <?php
 
-namespace Oops\GoogleAuthenticator\DI;
+namespace Oops\TotpAuthenticator\DI;
 
 use Nette\DI\CompilerExtension;
 
 
-class GoogleAuthenticatorExtension extends CompilerExtension
+class TotpAuthenticatorExtension extends CompilerExtension
 {
 
 	private $defaults = [
@@ -20,11 +20,11 @@ class GoogleAuthenticatorExtension extends CompilerExtension
 		$config = $this->getConfig($this->defaults);
 
 		$builder->addDefinition($this->prefix('timeProvider'))
-			->setClass('Oops\GoogleAuthenticator\Utils\TimeProvider')
+			->setClass('Oops\TotpAuthenticator\Utils\TimeProvider')
 			->setAutowired(FALSE);
 
 		$builder->addDefinition($this->prefix('authenticator'))
-			->setClass('Oops\GoogleAuthenticator\Security\GoogleAuthenticator', [$this->prefix('@timeProvider')])
+			->setClass('Oops\TotpAuthenticator\Security\TotpAuthenticator', [$this->prefix('@timeProvider')])
 			->addSetup('setTimeWindow', [$config['timeWindow']])
 			->addSetup('setIssuer', [$config['issuer']]);
 	}
