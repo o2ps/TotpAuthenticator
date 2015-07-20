@@ -12,11 +12,17 @@ matrix:
     - php: 7.0
     - php: hhvm
 
+sudo: false
+
 before_script:
-  - composer self-update
-  - composer install --no-interaction --prefer-source --dev
+  - travis_retry composer self-update
+  - travis_retry composer install --no-interaction --prefer-source --dev
 
 script: ./vendor/bin/tester -c ./tests/php.ini-unix ./tests/TotpAuthenticatorTests
 
 after_failure:
   - 'for i in $(find ./tests -name \*.actual); do echo "--- $i"; cat $i; echo; echo; done'
+
+cache:
+  directories:
+    - $HOME/.composer/cache
