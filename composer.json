@@ -20,7 +20,9 @@
 		"nette/utils": "~2.2"
 	},
 	"require-dev": {
-		"nette/tester": "~1.0"
+		"nette/tester": "~1.0",
+		"jakub-onderka/php-parallel-lint": "~0.8",
+		"mockery/mockery": "~0.9"
 	},
 	"suggest": {
 		"nette/di": "Optional integration with Nette's DI container"

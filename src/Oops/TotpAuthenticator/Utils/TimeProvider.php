@@ -3,8 +3,12 @@
 namespace Oops\TotpAuthenticator\Utils;
 
 
-class TimeProvider implements ITimeProvider
+/**
+ * @internal
+ */
+class TimeProvider
 {
+
 	/**
 	 * @return float
 	 */
@@ -12,4 +16,5 @@ class TimeProvider implements ITimeProvider
 	{
 		return microtime(TRUE);
 	}
+
 }

@@ -4,7 +4,7 @@ namespace Oops\TotpAuthenticator\Security;
 
 use Nette\Utils\Random;
 use Oops\TotpAuthenticator\InvalidArgumentException;
-use Oops\TotpAuthenticator\Utils\ITimeProvider;
+use Oops\TotpAuthenticator\Utils\TimeProvider;
 
 
 class TotpAuthenticator
@@ -16,13 +16,13 @@ class TotpAuthenticator
 	/** @var string */
 	private $issuer;
 
-	/** @var ITimeProvider */
+	/** @var TimeProvider */
 	private $timeProvider;
 
 
-	public function __construct(ITimeProvider $timeProvider)
+	public function __construct(TimeProvider $timeProvider = NULL)
 	{
-		$this->timeProvider = $timeProvider;
+		$this->timeProvider = $timeProvider ?: new TimeProvider();
 	}
 
 
