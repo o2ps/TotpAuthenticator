@@ -26,54 +26,33 @@ class TotpAuthenticator
 	}
 
 
-	/**
-	 * @param int $timeWindow
-	 * @return TotpAuthenticator provides fluent interface
-	 */
-	public function setTimeWindow($timeWindow)
+	public function setTimeWindow(int $timeWindow): self
 	{
 		$this->timeWindow = $timeWindow;
 		return $this;
 	}
 
 
-	/**
-	 * @param string $issuer
-	 * @return TotpAuthenticator provides fluent interface
-	 */
-	public function setIssuer($issuer)
+	public function setIssuer(string $issuer): self
 	{
 		$this->issuer = $issuer;
 		return $this;
 	}
 
 
-	/**
-	 * @param string $secret
-	 * @param string $accountName
-	 * @return string
-	 */
-	public function getTotpUri($secret, $accountName)
+	public function getTotpUri(string $secret, string $accountName): string
 	{
 		return "otpauth://totp/" . ($this->issuer !== NULL ? "{$this->issuer}:" : "") . "{$accountName}?secret={$secret}" . ($this->issuer !== NULL ? "&issuer={$this->issuer}" : "");
 	}
 
 
-	/**
-	 * @return string
-	 */
-	public function getRandomSecret()
+	public function getRandomSecret(): string
 	{
 		return Random::generate(32, 'A-Z2-7');
 	}
 
 
-	/**
-	 * @param string $code
-	 * @param string $secret
-	 * @return bool
-	 */
-	public function verifyCode($code, $secret)
+	public function verifyCode(string $code, string $secret): bool
 	{
 		for ($offset = -$this->timeWindow; $offset <= $this->timeWindow; $offset++) {
 			if ((int) $code === (int) $this->getOneTimePassword($secret, $this->getTimestamp($offset))) {
@@ -85,12 +64,7 @@ class TotpAuthenticator
 	}
 
 
-	/**
-	 * @param string $secret
-	 * @param int $timestamp
-	 * @return int
-	 */
-	private function getOneTimePassword($secret, $timestamp)
+	private function getOneTimePassword(string $secret, string $timestamp): int
 	{
 		if ( ! preg_match('/^[A-Z2-7]+$/i', $secret)) {
 			throw new InvalidArgumentException("Seed contains invalid characters. Make sure it is a valid base32 string.");
@@ -112,22 +86,14 @@ class TotpAuthenticator
 	}
 
 
-	/**
-	 * @param int $offset
-	 * @return string
-	 */
-	private function getTimestamp($offset)
+	private function getTimestamp(int $offset): string
 	{
 		$timestamp = floor(($this->timeProvider->getMicroTime() + ($offset * 30)) / 30);
 		return pack('N*', 0) . pack('N*', $timestamp);
 	}
 
 
-	/**
-	 * @param string $base32
-	 * @return string
-	 */
-	private function decodeBase32($base32)
+	private function decodeBase32(string $base32): string
 	{
 		$charMap = ["A" => 0, "B" => 1, "C" => 2, "D" => 3, "E" => 4, "F" => 5, "G" => 6, "H" => 7,
 			"I" => 8, "J" => 9, "K" => 10, "L" => 11, "M" => 12, "N" => 13, "O" => 14, "P" => 15,

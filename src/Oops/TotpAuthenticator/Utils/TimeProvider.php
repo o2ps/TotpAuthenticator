@@ -9,10 +9,7 @@ namespace Oops\TotpAuthenticator\Utils;
 class TimeProvider
 {
 
-	/**
-	 * @return float
-	 */
-	public function getMicroTime()
+	public function getMicroTime(): float
 	{
 		return microtime(TRUE);
 	}

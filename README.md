@@ -6,10 +6,10 @@ Oops/TotpAuthenticator implements the [TOTP algorithm](http://tools.ietf.org/htm
 ## Installation and requirements
 
 ```bash
-$ composer require oops/totp-authenticator:~2.0
+$ composer require oops/totp-authenticator
 ```
 
-Oops/TotpAuthenticator requires PHP >= 5.4 (because I'm too lazy to write `array()`).
+Oops/TotpAuthenticator requires PHP >= 7.0.
 
 
 ## Usage

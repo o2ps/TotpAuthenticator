@@ -16,7 +16,7 @@
 		"issues": "https://github.com/o2ps/TotpAuthenticator/issues"
 	},
 	"require": {
-		"php": ">= 5.4.0",
+		"php": ">= 7.0.0",
 		"nette/utils": "~2.2"
 	},
 	"require-dev": {
