@@ -2,9 +2,9 @@
 
 namespace Oops\TotpAuthenticator\Security;
 
-use Nette\Utils\Random;
 use Oops\TotpAuthenticator\InvalidArgumentException;
 use Oops\TotpAuthenticator\Utils\TimeProvider;
+use ParagonIE\ConstantTime\Base32;
 
 
 class TotpAuthenticator
@@ -48,14 +48,14 @@ class TotpAuthenticator
 
 	public function getRandomSecret(): string
 	{
-		return Random::generate(32, 'A-Z2-7');
+		return Base32::encodeUpper(random_bytes(20));
 	}
 
 
-	public function verifyCode(string $code, string $secret): bool
+	public function verifyCode($code, string $secret): bool
 	{
 		for ($offset = -$this->timeWindow; $offset <= $this->timeWindow; $offset++) {
-			if ((int) $code === (int) $this->getOneTimePassword($secret, $this->getTimestamp($offset))) {
+			if ((int) $code === $this->getOneTimePassword($secret, $this->getTimestamp($offset))) {
 				return TRUE;
 			}
 		}
@@ -66,15 +66,15 @@ class TotpAuthenticator
 
 	private function getOneTimePassword(string $secret, string $timestamp): int
 	{
-		if ( ! preg_match('/^[A-Z2-7]+$/i', $secret)) {
-			throw new InvalidArgumentException("Seed contains invalid characters. Make sure it is a valid base32 string.");
+		if ( ! preg_match('/^[A-Z2-7]+$/', $secret)) {
+			throw new InvalidArgumentException("Seed contains invalid characters. Make sure it is a valid uppercase base32 string.");
 		}
 
 		if (strlen($secret) < 16) {
 			throw new InvalidArgumentException("Seed is too short. It must be at least 16 base32 digits long.");
 		}
 
-		$hash = hash_hmac('sha1', $timestamp, $this->decodeBase32($secret), TRUE);
+		$hash = hash_hmac('sha1', $timestamp, Base32::decodeUpper($secret), TRUE);
 		$offset = ord($hash[19]) & 0xF;
 
 		return (
@@ -82,7 +82,7 @@ class TotpAuthenticator
 			((ord($hash[$offset+1]) & 0xFF) << 16) |
 			((ord($hash[$offset+2]) & 0xFF) << 8) |
 			((ord($hash[$offset+3]) & 0xFF))
-		) % pow(10, 6);
+		) % 1e6;
 	}
 
 
@@ -90,34 +90,6 @@ class TotpAuthenticator
 	{
 		$timestamp = floor(($this->timeProvider->getMicroTime() + ($offset * 30)) / 30);
 		return pack('N*', 0) . pack('N*', $timestamp);
-	}
-
-
-	private function decodeBase32(string $base32): string
-	{
-		$charMap = ["A" => 0, "B" => 1, "C" => 2, "D" => 3, "E" => 4, "F" => 5, "G" => 6, "H" => 7,
-			"I" => 8, "J" => 9, "K" => 10, "L" => 11, "M" => 12, "N" => 13, "O" => 14, "P" => 15,
-			"Q" => 16, "R" => 17, "S" => 18, "T" => 19, "U" => 20, "V" => 21, "W" => 22, "X" => 23,
-			"Y" => 24, "Z" => 25, "2" => 26, "3" => 27, "4" => 28, "5" => 29, "6" => 30,"7" => 31
-		];
-
-		$base32 = strtoupper($base32);
-		$length = strlen($base32);
-		$n = $j = 0;
-		$binary = '';
-
-		for ($i = 0; $i < $length; $i++) {
-			$n <<= 5;
-			$n = $n + $charMap[$base32[$i]];
-			$j += 5;
-
-			if ($j >= 8) {
-				$j -= 8;
-				$binary .= chr(($n & (0xFF << $j)) >> $j);
-			}
-		}
-
-		return $binary;
 	}
 
 }
