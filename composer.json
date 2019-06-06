@@ -9,6 +9,11 @@
 			"name": "Jiří Pudil",
 			"email": "me@jiripudil.cz",
 			"homepage": "http://jiripudil.cz"
+		},
+		{
+			"name": "Pavel Gajdoš",
+			"email": "info@pavelgajdos.cz",
+			"homepage": "pavelgajdos.cz"
 		}
 	],
 	"support": {
@@ -16,13 +21,13 @@
 		"issues": "https://github.com/o2ps/TotpAuthenticator/issues"
 	},
 	"require": {
-		"php": ">= 7.0.0",
-		"nette/utils": "^2.4",
+		"php": ">= 7.1",
+		"nette/utils": "~3.0",
 		"paragonie/constant_time_encoding": "^2.0"
 	},
 	"require-dev": {
-		"nette/di": "^2.4.0",
-		"nette/tester": "^2.0.0",
+		"nette/di": "~3.0",
+		"nette/tester": "^2.2",
 		"mockery/mockery": "^1.0.0"
 	},
 	"suggest": {
