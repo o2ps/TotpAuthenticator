@@ -42,7 +42,8 @@ class TotpAuthenticator
 
 	public function getTotpUri(string $secret, string $accountName): string
 	{
-		return "otpauth://totp/" . ($this->issuer !== NULL ? "{$this->issuer}:" : "") . "{$accountName}?secret={$secret}" . ($this->issuer !== NULL ? "&issuer={$this->issuer}" : "");
+        $issuer = $this->issuer !== NULL ? rawurlencode($this->issuer) : null;
+        return "otpauth://totp/" . ($issuer ? "$issuer:" : "") . "$accountName?secret=$secret" . ($issuer ? "&issuer=$issuer" : "");
 	}
 
 
