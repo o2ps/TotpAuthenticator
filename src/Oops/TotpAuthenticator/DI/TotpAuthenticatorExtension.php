@@ -2,6 +2,7 @@
 
 namespace Oops\TotpAuthenticator\DI;
 
+
 use Nette\DI\CompilerExtension;
 use Nette\Utils\Validators;
 use Oops\TotpAuthenticator\Security\TotpAuthenticator;
@@ -11,28 +12,29 @@ use Oops\TotpAuthenticator\Utils\TimeProvider;
 class TotpAuthenticatorExtension extends CompilerExtension
 {
 
-	private $defaults = [
-		'timeWindow' => 1,
-		'issuer' => '',
-	];
+    private $defaults = [
+        'timeWindow' => 1,
+        'issuer' => '',
+    ];
 
 
-	public function loadConfiguration()
-	{
-		$builder = $this->getContainerBuilder();
-		$config = $this->validateConfig($this->defaults);
 
-		Validators::assertField($config, 'timeWindow', 'int');
-		Validators::assertField($config, 'issuer', 'string:1..');
+    public function loadConfiguration()
+    {
+        $builder = $this->getContainerBuilder();
+        $config = $this->validateConfig($this->defaults);
 
-		$builder->addDefinition($this->prefix('timeProvider'))
-			->setClass(TimeProvider::class)
-			->setAutowired(FALSE);
+        Validators::assertField($config, 'timeWindow', 'int');
+        Validators::assertField($config, 'issuer', 'string:1..');
 
-		$builder->addDefinition($this->prefix('authenticator'))
-			->setClass(TotpAuthenticator::class, [$this->prefix('@timeProvider')])
-			->addSetup('setTimeWindow', [$config['timeWindow']])
-			->addSetup('setIssuer', [$config['issuer']]);
-	}
+        $builder->addDefinition($this->prefix('timeProvider'))
+            ->setFactory(TimeProvider::class)
+            ->setAutowired(FALSE);
+
+        $builder->addDefinition($this->prefix('authenticator'))
+            ->setFactory(TotpAuthenticator::class, [$this->prefix('@timeProvider')])
+            ->addSetup('setTimeWindow', [$config['timeWindow']])
+            ->addSetup('setIssuer', [$config['issuer']]);
+    }
 
 }
