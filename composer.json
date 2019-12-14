@@ -16,24 +16,24 @@
 		"issues": "https://github.com/o2ps/TotpAuthenticator/issues"
 	},
 	"require": {
-		"php": ">= 7.0.0",
-		"nette/utils": "^2.4",
+		"php": "^7.2",
 		"paragonie/constant_time_encoding": "^2.0"
 	},
 	"require-dev": {
-		"nette/di": "^2.4.0",
-		"nette/tester": "^2.0.0",
-		"mockery/mockery": "^1.0.0"
+		"nette/di": "^3.0",
+		"nette/tester": "^2.3.1",
+		"mockery/mockery": "^1.3",
+		"phpstan/phpstan": "^0.12"
 	},
 	"suggest": {
 		"nette/di": "Optional integration with Nette's DI container"
 	},
 	"autoload": {
-		"psr-0": {
+		"psr-4": {
 			"Oops\\TotpAuthenticator\\": "src/"
 		},
 		"classmap": [
-			"src/Oops/TotpAuthenticator/exceptions.php"
+			"src/exceptions.php"
 		]
 	}
 }

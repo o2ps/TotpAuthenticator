@@ -2,26 +2,45 @@ language: php
 sudo: false
 
 php:
-  - 7.0
-  - 7.1
   - 7.2
+  - 7.3
+  - 7.4
+
+env:
+  - NETTE_VERSION="^2.4"
+  - NETTE_VERSION="^3.0"
 
 before_install:
+  - if php --ri xdebug >/dev/null;then phpenv config-rm xdebug.ini; fi
   - travis_retry composer self-update
 
 install:
-  - travis_retry composer install --no-interaction --prefer-source
-  - travis_retry composer global require "jakub-onderka/php-parallel-lint:^0.9.0" "phpstan/phpstan-shim:^0.9.0"
-
-before_script:
-  - $HOME/.composer/vendor/bin/parallel-lint -e php,phpt --exclude vendor .
-  - $HOME/.composer/vendor/bin/phpstan.phar analyze --no-progress --no-interaction -l 7 src
+  - composer require "nette/di:${NETTE_VERSION}" --dev --no-update
+  - travis_retry composer update --prefer-source --no-interaction
 
 script:
   - vendor/bin/tester -c tests/php.ini-unix tests/TotpAuthenticatorTests
 
 after_failure:
   - 'for i in $(find ./tests -name \*.actual); do echo "--- $i"; cat $i; echo; echo; done'
+
+jobs:
+  include:
+    - stage: QA
+      name: Static Analysis
+      php: 7.4
+      env: NETTE_VERSION="^3.0"
+      script:
+        - vendor/bin/phpstan analyze --no-progress --no-interaction --level max src/
+
+    - stage: QA
+      name: Code Coverage
+      php: 7.4
+      env: NETTE_VERSION="^3.0"
+      script:
+        - vendor/bin/tester -p phpdbg -c tests/php.ini-unix -s --coverage coverage.xml --coverage-src src/ tests/TotpAuthenticatorTests
+      after_success:
+        - bash <(curl --retry 3 -s https://codecov.io/bash)
 
 cache:
   directories:

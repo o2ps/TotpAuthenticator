@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 use Oops\TotpAuthenticator\Security\TotpAuthenticator;
 use Oops\TotpAuthenticator\Utils\TimeProvider;
@@ -10,4 +10,4 @@ require __DIR__ . '/../bootstrap.php';
 
 $googleAuthenticator = new TotpAuthenticator(new TimeProvider());
 Assert::match('~^[A-Z2-7]{32}$~', $seed1 = $googleAuthenticator->getRandomSecret());
-Assert::notEqual($googleAuthenticator->getRandomSecret(), $seed1);
+Assert::notEqual($seed1, $googleAuthenticator->getRandomSecret());

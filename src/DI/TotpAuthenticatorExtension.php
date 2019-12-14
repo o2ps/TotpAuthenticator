@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types = 1);
 
 namespace Oops\TotpAuthenticator\DI;
 
@@ -11,6 +11,9 @@ use Oops\TotpAuthenticator\Utils\TimeProvider;
 class TotpAuthenticatorExtension extends CompilerExtension
 {
 
+	/**
+	 * @var array{timeWindow: int, issuer: string}
+	 */
 	private $defaults = [
 		'timeWindow' => 1,
 		'issuer' => '',
@@ -26,11 +29,11 @@ class TotpAuthenticatorExtension extends CompilerExtension
 		Validators::assertField($config, 'issuer', 'string:1..');
 
 		$builder->addDefinition($this->prefix('timeProvider'))
-			->setClass(TimeProvider::class)
+			->setFactory(TimeProvider::class)
 			->setAutowired(FALSE);
 
 		$builder->addDefinition($this->prefix('authenticator'))
-			->setClass(TotpAuthenticator::class, [$this->prefix('@timeProvider')])
+			->setFactory(TotpAuthenticator::class, [$this->prefix('@timeProvider')])
 			->addSetup('setTimeWindow', [$config['timeWindow']])
 			->addSetup('setIssuer', [$config['issuer']]);
 	}
