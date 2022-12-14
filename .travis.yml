@@ -5,6 +5,8 @@ php:
   - 7.2
   - 7.3
   - 7.4
+  - 8.0
+  - 8.1
 
 env:
   - NETTE_VERSION="^2.4"
@@ -28,14 +30,14 @@ jobs:
   include:
     - stage: QA
       name: Static Analysis
-      php: 7.4
+      php: 8.1
       env: NETTE_VERSION="^3.0"
       script:
         - vendor/bin/phpstan analyze --no-progress --no-interaction --level max src/
 
     - stage: QA
       name: Code Coverage
-      php: 7.4
+      php: 8.1
       env: NETTE_VERSION="^3.0"
       script:
         - vendor/bin/tester -p phpdbg -c tests/php.ini-unix -s --coverage coverage.xml --coverage-src src/ tests/TotpAuthenticatorTests

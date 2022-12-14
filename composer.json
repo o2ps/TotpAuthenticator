@@ -16,7 +16,7 @@
 		"issues": "https://github.com/o2ps/TotpAuthenticator/issues"
 	},
 	"require": {
-		"php": "^7.2",
+		"php": ">=7.2.0 <8.2",
 		"paragonie/constant_time_encoding": "^2.0"
 	},
 	"require-dev": {
